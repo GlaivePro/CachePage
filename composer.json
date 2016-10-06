@@ -1,0 +1,28 @@
+{
+    "name": "glaivepro/cachepage",
+    "description": "Laravel middleware for full page caching.",
+    "keywords": [
+        "caching",
+        "middleware",
+		"laravel"
+    ],
+    "homepage": "https://github.com/GlaivePro/CachePage",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juris Evertovskis",
+            "email": "juris@glaive.pro",
+            "homepage": "http://glaive.pro",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "laravel/framework": "~5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GlaivePro\\CachePage\\": "src"
+        }
+    }
+}
