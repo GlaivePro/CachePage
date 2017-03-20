@@ -21,7 +21,7 @@ class CachePageServiceProvider extends ServiceProvider
 				
 		$this->mergeConfigFrom($packageConfigFile, 'cachepage');
 		
-		$router->aliasMiddleware('gpcachepage', \GlaivePro\CachePage\Middleware\CachePage::class);
+		$router->middleware('gpcachepage', \GlaivePro\CachePage\Middleware\CachePage::class);
     }
    
     /**
