@@ -25,7 +25,9 @@ Laravel middleware for full page caching.
 
 Open your `copmoser.json` file, find the `require` key and add this value :
 
-    "glaivepro/cachepage": "^1.0.0"
+    "glaivepro/cachepage": "^1.1.0"
+    
+The version `^1.1.0` is for Laravel 5.4, if you are using an older version, go for `^1.0.0`.
     
 Execute `composer update`.
 
