@@ -18,11 +18,18 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "laravel/framework": ">=5.4"
+        "laravel/framework": ">=5.5"
     },
     "autoload": {
         "psr-4": {
             "GlaivePro\\CachePage\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "GlaivePro\\CachePage\\CachePageServiceProvider"
+            ]
         }
     }
 }
