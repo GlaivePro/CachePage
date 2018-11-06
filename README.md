@@ -7,7 +7,6 @@ Laravel middleware for full page caching.
 
 - [How do I get this in my app?](#how-do-i-get-this-in-my-app)
     - [Composer](#composer)
-    - [Getting files manually](#getting-files-manually)
     - [Binding it to your app](#binding-it-to-your-app)
 - [How do I use it?](#how-do-i-use-it)
     - [Middleware](#middleware)
@@ -21,34 +20,13 @@ Laravel middleware for full page caching.
 
 ## How do I get this in my app?
 
-### Composer
-
-Open your `copmoser.json` file, find the `require` key and add this value :
-
-    "glaivepro/cachepage": "^1.1.0"
-    
-The version `^1.1.0` is for Laravel 5.4, if you are using an older version, go for `~1.0.0`.
-    
-Execute `composer update`.
-
-### Getting files manually
-
-If, for some reason you can't or don't want to download package using composer, you should download the files and put all of the contents in `/vendor/glaivepro/cachepage/` folder.
-
-Add this to your `composer.json` file (if the autoload and psr-4 keys are already there, just leave them and the contents and only add what's missing):
-
-```json
-	"autoload": {
-        "psr-4": {
-            "GlaivePro\\CachePage\\": "vendor/glaivepro/cachepage/src/GlaivePro/CachePage",
-        }
-    }
+``` bash
+$ composer require glaivepro/cachepage
 ```
-	
-Run `composer dump-autoload` command.
-	
-	
+
 ### Binding it to your app
+
+> Skip this section if you are using package discovery which is default for recent versions of Laravel.
 
 Firt of all you have to register the service provider. 
 
