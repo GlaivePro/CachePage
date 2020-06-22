@@ -1,5 +1,8 @@
-### 1.2.0
+### 1.3.0
 - Changed key to use `fullUrl()` instead of `url()`.
+
+### 1.2.0
+- Supports package discovery.
 
 ### 1.1.0
  - Changed middleware alias binding to work in `Laravel 5.4`.
