@@ -30,7 +30,7 @@ class CachePage
 				Cache::flush();
 		}
 		
-		$key = urlencode($request->url());
+		$key = urlencode($request->fullUrl());
 		
 		if ($keyBy)
 		{
