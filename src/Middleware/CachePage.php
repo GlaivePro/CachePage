@@ -53,16 +53,16 @@ class CachePage
 			if (config('cachepage.allowClearing') && $request->input('clearcache'))
 				Cache::tags('gpcachepage')->forget($key);
 
-			if (Cache::tags('gpcachepage')->has($key)){
+			if (Cache::tags('gpcachepage')->has($key)) {
 				$cached_response = Cache::tags('gpcachepage')->get($key);
-				if(strlen($cached_response) > 0){
+				if (strlen($cached_response) > 0) {
 					return response(Cache::tags('gpcachepage')->get($key));
 				}
 			}
 
 			$response = $next($request);
 
-			if(app('Illuminate\Http\Response')->status() == 200 && strlen($response->getContent()) > 0)
+			if (app('Illuminate\Http\Response')->status() == 200 && strlen($response->getContent()) > 0)
 				Cache::tags('gpcachepage')->put($key, $response->getContent(), $time);
 		}
 		else
@@ -70,17 +70,16 @@ class CachePage
 			if (config('cachepage.allowClearing') && $request->input('clearcache'))
 				Cache::forget($key);
 		
-			if (Cache::has($key)){
+			if (Cache::has($key)) {
 				$cached_response = Cache::get($key);
-				if(strlen($cached_response) > 0){
+				if (strlen($cached_response) > 0) {
 					return response(Cache::get($key));
 				}
-				
 			}
 
 			$response = $next($request);
 	
-			if(app('Illuminate\Http\Response')->status() == 200 && strlen($response->getContent()) > 0)
+			if (app('Illuminate\Http\Response')->status() == 200 && strlen($response->getContent()) > 0)
 				Cache::put($key, $response->getContent(), $time);
 		}
 
