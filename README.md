@@ -57,13 +57,13 @@ Add the `gpcachepage` middleware to a route and all responses will be cached for
 
 The response will be cached using Laravels `Cache` functionality you should configure it. It will be keyed by requests url and tagged with `gpcachepage` tag (if your cache driver supports tagging).
 
-You can specify time if you want to. For example, to cache a page for two hours:
+You can specify time if you want to. For example, to cache a page for two minutes:
 
 ```php
     Route::get('contacts', 'PageController@contacts')->middleware('gpcachepage:120');
 ```
 
-Or make a group of routes that cache their responses for 5 hours:
+Or make a group of routes that cache their responses for 5 minutes:
 
 ```php
     Route::group(['middleware' => ['gpcachepage:300']], function () {

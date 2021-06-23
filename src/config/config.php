@@ -3,7 +3,7 @@
 return [
 
 	//Time to store cached pages if not specified.
-	'time' => 5,
+	'time' => 300,
 	
 	//Allow skipping cache using parameters in HTTP request.
 	'allowSkipping' => true,
