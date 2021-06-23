@@ -18,66 +18,53 @@ class CachePage
     {
 		if (config('cachepage.allowSkipping') && $request->input('skipcache'))
 			return $next($request);
-		
+	
+		$cache = cache();
+		if ($cache->getStore() instanceof \Illuminate\Cache\TaggableStore)
+			$cache = $cache->tags('gpcachepage');
+
 		if (!$time)
 			$time = config('cachepage.time');
 	
-		if (config('cachepage.allowFlushing') && $request->input('flushcache')) {
-			if(Cache::getStore() instanceof \Illuminate\Cache\TaggableStore)
-				Cache::tags('gpcachepage')->flush();
-			else
-				Cache::flush();
-		}
+		if (config('cachepage.allowFlushing') && $request->input('flushcache'))
+			$cache->flush();
 
-		$key = urlencode($request->fullUrl());
+		$key = $this->getKey($request, $keyBy);
 		
-		if ($keyBy) {
-			if (Auth::check()) {
-				$keyByChain = explode('.', $keyBy);
-				$keyGetter = Auth::user();
-				
-				foreach ($keyByChain as $method)
-					$keyGetter = $keyGetter->$method;
-					
-				$key = 'user='.$keyGetter.'&url='.$key;
-			} else
-				$key = 'user=guest&url='.$key;
+		if (config('cachepage.allowClearing') && $request->input('clearcache'))
+			$cache->forget($key);
+
+		if ($cache->has($key)) {
+			$cached_response = $cache->get($key);
+
+			if (strlen($cached_response) > 0)
+				return response($cached_response));
 		}
-		
-		if(Cache::getStore() instanceof \Illuminate\Cache\TaggableStore) {
-			if (config('cachepage.allowClearing') && $request->input('clearcache'))
-				Cache::tags('gpcachepage')->forget($key);
 
-			if (Cache::tags('gpcachepage')->has($key)) {
-				$cached_response = Cache::tags('gpcachepage')->get($key);
+		$response = $next($request);
 
-				if (strlen($cached_response) > 0)
-					return response(Cache::tags('gpcachepage')->get($key));
-			}
-
-			$response = $next($request);
-
-			if ($response->status() == 200 && strlen($response->getContent()) > 0)
-				Cache::tags('gpcachepage')->put($key, $response->getContent(), $time);
-		}
-		else
-		{
-			if (config('cachepage.allowClearing') && $request->input('clearcache'))
-				Cache::forget($key);
-		
-			if (Cache::has($key)) {
-				$cached_response = Cache::get($key);
-
-				if (strlen($cached_response) > 0)
-					return response(Cache::get($key));
-			}
-
-			$response = $next($request);
-	
-			if ($response->status() == 200 && strlen($response->getContent()) > 0)
-				Cache::put($key, $response->getContent(), $time);
-		}
+		if ($response->status() == 200 && strlen($response->getContent()) > 0)
+			$cache->put($key, $response->getContent(), $time);
 
         return $response;
     }
+
+	protected function getKey($request, $keyBy)
+	{
+		$key = urlencode($request->fullUrl());
+
+		if (!$keyBy)
+			return $key;
+		
+		if (Auth::guest())
+			return 'user=guest&url='.$key;
+
+		$keyBy = explode('.', $keyBy);
+		$keyGetter = Auth::user();
+		
+		foreach ($keyBy as $prop)
+			$keyGetter = $keyGetter->$prop;
+			
+		return 'user='.$keyGetter.'&url='.$key;
+	}
 }
