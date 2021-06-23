@@ -40,7 +40,7 @@ class CachePage
 			$cached_response = $cache->get($key);
 
 			if (strlen($cached_response) > 0)
-				return response($cached_response));
+				return response($cached_response);
 		}
 
 		$response = $next($request);
