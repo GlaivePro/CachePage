@@ -18,6 +18,10 @@ class CachePage
     {
 		if (config('cachepage.allowSkipping') && $request->input('skipcache'))
 			return $next($request);
+
+		$key = $this->getKey($request, $keyBy);
+		if (!$key)
+			return $next($request);
 	
 		$cache = cache();
 		if ($cache->getStore() instanceof \Illuminate\Cache\TaggableStore)
@@ -28,8 +32,6 @@ class CachePage
 	
 		if (config('cachepage.allowFlushing') && $request->input('flushcache'))
 			$cache->flush();
-
-		$key = $this->getKey($request, $keyBy);
 		
 		if (config('cachepage.allowClearing') && $request->input('clearcache'))
 			$cache->forget($key);
@@ -58,6 +60,10 @@ class CachePage
 		
 		if (Auth::guest())
 			return 'user=guest&url='.$key;
+		
+		// Special key that allows skipping cache for authenticated users.
+		if ('NULL' === $keyBy)
+			return null;
 
 		$keyBy = explode('.', $keyBy);
 		$keyGetter = Auth::user();

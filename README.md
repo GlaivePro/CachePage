@@ -93,6 +93,12 @@ If you want to key by users role or some other field (or related field), you can
 
 The middleware will then try to get a value from `Auth::user()->role->name`.
 
+If you only want to cache pages for guests, use the key `NULL` like this and caching will be disabled for authenticated users:
+
+```php
+    Route::get('contacts', 'PageController@contacts')->middleware('gpcachepage:120,NULL');
+```
+
 
 ## Other concerns
 
